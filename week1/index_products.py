@@ -97,6 +97,15 @@ def get_opensearch():
 
     return client
 
+def format_value(value):
+    if type(value) is list:
+        if len(value) == 0:
+            return [] 
+        else:
+            return value[0]
+    else:
+        value
+
 
 def index_file(file, index_name):
     docs_indexed = 0
@@ -113,11 +122,20 @@ def index_file(file, index_name):
             key = mappings[idx + 1]
             doc[key] = child.xpath(xpath_expr)
         #print(doc)
+        #print("------")
+        #print(type(doc))
+        #print("------")
         if 'productId' not in doc or len(doc['productId']) == 0:
             continue
         #### Step 2.b: Create a valid OpenSearch Doc and bulk index 2000 docs at a time
-        the_doc = None
-        docs.append(the_doc)
+
+        new_doc = {'_index': 'bbuy_products' }
+        for i in doc:
+            new_doc[i] = format_value(doc[i])
+        print(new_doc) 
+        docs.append(new_doc)
+
+    bulk(client, docs)
 
     return docs_indexed
 
