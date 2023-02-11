@@ -97,16 +97,6 @@ def get_opensearch():
 
     return client
 
-def format_value(value):
-    if type(value) is list:
-        if len(value) == 0:
-            return [] 
-        else:
-            return value[0]
-    else:
-        value
-
-
 def index_file(file, index_name):
     docs_indexed = 0
     client = get_opensearch()
@@ -128,7 +118,7 @@ def index_file(file, index_name):
 
         new_doc = {'_index': 'bbuy_products' }
         for i in doc:
-            new_doc[i] = format_value(doc[i])
+            new_doc[i] =  doc[i]
         print(new_doc) 
         print("------")
         docs.append(new_doc)
