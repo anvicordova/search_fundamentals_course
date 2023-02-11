@@ -113,7 +113,9 @@ def create_query(user_query, filters, sort="_score", sortDir="desc"):
         'size': 10,
         "query": {
             "query_string": {
-                "query": user_query
+                "query": user_query,
+                "phrase_slop": 3,
+                "fields": ["name", "shortDescription", "longDescription"]
             }
         },
         "aggs": {
