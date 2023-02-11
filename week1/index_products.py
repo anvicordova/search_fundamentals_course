@@ -121,10 +121,8 @@ def index_file(file, index_name):
             xpath_expr = mappings[idx]
             key = mappings[idx + 1]
             doc[key] = child.xpath(xpath_expr)
-        #print(doc)
-        #print("------")
-        #print(type(doc))
-        #print("------")
+        print(doc)
+
         if 'productId' not in doc or len(doc['productId']) == 0:
             continue
         #### Step 2.b: Create a valid OpenSearch Doc and bulk index 2000 docs at a time
@@ -133,10 +131,16 @@ def index_file(file, index_name):
         for i in doc:
             new_doc[i] = format_value(doc[i])
         print(new_doc) 
+        print("------")
         docs.append(new_doc)
 
-    bulk(client, docs)
+        if len(docs) == 2000:
+            bulk(client, docs)
+            docs_indexed += len(docs)
+            docs = []
 
+    bulk(client, docs)
+    docs_indexed += len(docs)
     return docs_indexed
 
 @click.command()
