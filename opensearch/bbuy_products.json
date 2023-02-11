@@ -234,7 +234,8 @@
         "fields": {
           "keyword": {
             "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "analyzer": "english"
           }
         }
       },
@@ -270,7 +271,8 @@
         "fields": {
           "keyword": {
             "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "analyzer": "english"
           }
         }
       },
@@ -314,7 +316,7 @@
         "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
+            "type": "float",
             "ignore_above": 256
           }
         }
@@ -335,7 +337,7 @@
         "type": "text",
         "fields": {
           "keyword": {
-            "type": "keyword",
+            "type": "float",
             "ignore_above": 256
           }
         }
@@ -390,7 +392,8 @@
         "fields": {
           "keyword": {
             "type": "keyword",
-            "ignore_above": 256
+            "ignore_above": 256,
+            "analyzer": "english"
           }
         }
       },
