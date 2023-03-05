@@ -23,3 +23,9 @@
     ```
     GET bbuy_products/_mapping
     ```
+
+    or for a single field
+
+    ```
+    GET bbuy_products/_mapping/field/field_name
+    ```
