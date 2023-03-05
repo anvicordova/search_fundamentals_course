@@ -84,8 +84,16 @@ def get_opensearch():
     host = 'localhost'
     port = 9200
     auth = ('admin', 'admin')
-    #### Step 2.a: Create a connection to OpenSearch
-    client = None
+
+    client = OpenSearch(
+        hosts = [{'host': host, 'port': port}],
+        http_compress = True,
+        http_auth = auth,
+        use_ssl = True,
+        verify_certs = False,
+        ssl_assert_hostname = False,
+        ssl_show_warn = False,
+    )
     return client
 
 
@@ -103,13 +111,27 @@ def index_file(file, index_name):
             xpath_expr = mappings[idx]
             key = mappings[idx + 1]
             doc[key] = child.xpath(xpath_expr)
-        #print(doc)
+
+        print(doc)
+
         if 'productId' not in doc or len(doc['productId']) == 0:
             continue
-        #### Step 2.b: Create a valid OpenSearch Doc and bulk index 2000 docs at a time
-        the_doc = None
-        docs.append(the_doc)
 
+        new_doc = {'_index': 'bbuy_products' }
+
+        for i in doc:
+            new_doc[i] =  doc[i]
+        print(new_doc)
+        print("------")
+        docs.append(new_doc)
+
+        if len(docs) == 2000:
+            bulk(client, docs)
+            docs_indexed += len(docs)
+            docs = []
+
+    bulk(client, docs)
+    docs_indexed += len(docs)
     return docs_indexed
 
 @click.command()
